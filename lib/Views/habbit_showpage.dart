@@ -40,6 +40,7 @@ class HabbitShowPage extends StatelessWidget {
               return Text(habit?.habbitName ?? '');
             },
           ),
+          Text('dfjhdgjhfgdjg'),
         ],
       ),
     );
