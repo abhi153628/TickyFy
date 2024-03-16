@@ -1,0 +1,14 @@
+
+          // CircleAvatar(
+                  
+          //          foregroundColor: const Color.fromARGB(255, 18, 16, 16),
+                  
+          //         backgroundColor: Colors.black12,
+                  
+                  
+          //         radius: 100,
+          //         backgroundImage: _image != null
+          //             ? FileImage(_image!) as ImageProvider 
+          //             : const AssetImage(
+          //                 'test/asset/SPLAH.jpg'), 
+          //       ),  
