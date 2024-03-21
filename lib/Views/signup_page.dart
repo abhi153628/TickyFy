@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tickyfy/controllers/cstm_Form_field.dart';
 import 'package:tickyfy/controllers/cstm_button.dart';
-
 import 'package:tickyfy/Database/db_functions.dart';
 import 'package:tickyfy/model/user_model.dart';
-
 import 'package:tickyfy/views/login_page.dart';
 import 'package:tickyfy/views/profile_page.dart';
-
 import '../controllers/color_controller.dart';
 import '../controllers/cstm_snackbar.dart';
 
 class SignupPage extends StatefulWidget {
+  // ignore: prefer_const_constructors_in_immutables
   SignupPage({Key? key});
 
   @override

@@ -40,7 +40,8 @@ class _HomePageState extends State<HomePage>
       appBar: AppBar(
         title: const Text('Hey User'),
       ),
-      //notifying
+      
+      //!notifying
       body: habbitNotifierList.value.isNotEmpty
           ? ValueListenableBuilder(
               valueListenable: habbitNotifierList,
@@ -65,7 +66,9 @@ class _HomePageState extends State<HomePage>
                         },
                         //edit the habbit
                         onpressed2: () async {
-                          showBottomSheet(
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            
                             context: context,
                             builder: (BuildContext context) {
                               return NotificationListener(
@@ -131,6 +134,7 @@ class _HomePageState extends State<HomePage>
           //for making the first two
           showModalBottomSheet(
             context: context,
+            isScrollControlled: true,
             builder: (BuildContext context) {
               return SingleChildScrollView(
                 //custom bottom sheet for that container showing for bottomsheet
