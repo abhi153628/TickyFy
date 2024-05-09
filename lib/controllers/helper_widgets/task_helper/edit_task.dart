@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 import 'package:tickyfy/controllers/custom_widgets/color_controller.dart';
 import 'package:tickyfy/controllers/custom_widgets/textstyle.dart';
+import 'package:tickyfy/model/model_class/task_model.dart';
 
-class AddTaskSheet extends StatefulWidget {
-  VoidCallback? onpressed;
-  TextEditingController? controller;
+// ignore: must_be_immutable
+class EditTaskSheet extends StatefulWidget {
+  VoidCallback onpressed;
 
+  TaskModel task;
   IconData icon;
   Color? color;
   String text2;
@@ -17,11 +18,13 @@ class AddTaskSheet extends StatefulWidget {
   VoidCallback? onTap2;
   VoidCallback onpressed2;
   final bool condition;
-
-  AddTaskSheet(
+  final TextEditingController controller;
+  EditTaskSheet(
       {super.key,
-      this.controller,
-      this.onpressed,
+      required this.controller,
+ 
+     required this.onpressed,
+      required this.task,
       required this.condition,
       required this.text2,
       required this.text3,
@@ -32,10 +35,10 @@ class AddTaskSheet extends StatefulWidget {
       required this.onpressed2});
 
   @override
-  State<AddTaskSheet> createState() => _AddTaskSheetState();
+  State<EditTaskSheet> createState() => _EditTaskSheetState();
 }
 
-class _AddTaskSheetState extends State<AddTaskSheet> {
+class _EditTaskSheetState extends State<EditTaskSheet> {
   // animation when mic is pressed
   bool _micPressed = false;
 
@@ -43,6 +46,18 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
     setState(() {
       _micPressed = !_micPressed;
     });
+  }
+//controller
+  late TextEditingController controller;
+  
+  @override
+  void initState() {
+    controller=widget.controller;
+    controller.text = widget.task.taskName;
+
+    
+
+    super.initState();
   }
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -59,7 +74,7 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
             ),
             const SizedBox(height: 8),
             TextFormField(
-              controller: widget.controller,
+              controller: controller,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please give Voice note';
@@ -133,11 +148,16 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                     fontSize: 13, fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.only(left: 228),
               child: ElevatedButton(
-                  onPressed: widget.onpressed, child: Text("save Words")),
+                  onPressed: () {
+                    widget.task.taskName = controller.text;
+                    // widget.task?.spokenWords;
+                    widget.onpressed();
+                  },
+                  child: const Text("edit Words")),
             )
           ],
         ),

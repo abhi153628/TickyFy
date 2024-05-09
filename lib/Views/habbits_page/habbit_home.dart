@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tickyfy/Views/habbits_page/habbit_showpage.dart';
+import 'package:tickyfy/Views/task_screens/localnotifi.dart';
 import 'package:tickyfy/Views/task_screens/task_home.dart';
 import 'package:tickyfy/controllers/helper_widgets/habbit_helper/add_habbit.dart';
 import 'package:tickyfy/controllers/custom_widgets/animationbutton.dart';
@@ -16,7 +17,6 @@ import '../../controllers/custom_widgets/drawermenu.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
@@ -26,6 +26,13 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   final TextEditingController habbitNameController = TextEditingController();
   final TextEditingController questionController = TextEditingController();
+    void scheduleNotification() {
+    
+    LocalNotificationService.showDailyScheduledNotification(
+      time: const TimeOfDay(hour: 8, minute: 0), 
+      question: questionController.text, 
+    );
+  }
   List<DateTime> dateList = [];
   @override
   void initState() {
@@ -55,7 +62,8 @@ class _HomePageState extends State<HomePage>
                         child: ListView.builder(
                             itemCount: value.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return HabbitTile(habbitQuestion:value[index].habbitQuestion,
+                              return HabbitTile(
+                                habbitQuestion: value[index].habbitQuestion,
                                 habbitName: value[index].habbitName,
                                 onTap: () {
                                   Navigator.of(context).push(
@@ -66,11 +74,13 @@ class _HomePageState extends State<HomePage>
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    HabbitShowPage(habit: value[index],)));
+                                                    HabbitShowPage(
+                                                      habit: value[index],
+                                                    ),),);
                                       },
                                     ),
                                   );
-                                },
+                                }, habit: value[index],
                               );
                             }),
                       ),
@@ -78,7 +88,7 @@ class _HomePageState extends State<HomePage>
                     Expanded(
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: dateList.length, 
+                          itemCount: dateList.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Column(
                               mainAxisSize: MainAxisSize.min,
@@ -91,15 +101,16 @@ class _HomePageState extends State<HomePage>
                                             false,
                                     onChanged: (isChecked) {
                                       HabitDBFunctions().updateCompletion(
-                                          dateList[index], isChecked ?? false,
+                                          dateList[index],
+                                          isChecked ?? false,
                                           e.habbitName);
                                     })),
-                                if (index != dateList.length - 1) const Divider(),
+                                if (index != dateList.length - 1)
+                                  const Divider(),
                               ],
                             );
                           }),
                     ),
-                  
                   ],
                 );
               },
@@ -107,7 +118,6 @@ class _HomePageState extends State<HomePage>
           : const Center(
               child: Text('Add habbits'),
             ),
-
       floatingActionButton: AddButton(
         onpressed: () {
           showModalBottomSheet(
@@ -123,7 +133,8 @@ class _HomePageState extends State<HomePage>
                           backgroundImage:
                               AssetImage('lib/assets/images/question (1).png'),
                         ),
-                        title: CustomText(text: 'Habbit', color: black, fontSize: 15),
+                        title: CustomText(
+                            text: 'Habbit', color: black, fontSize: 15),
                         subtitle: const Text(
                             'Track your mind using asking question to yourself'),
                         onTap: () {
@@ -147,6 +158,7 @@ class _HomePageState extends State<HomePage>
                                                       questionController.text,
                                                   habbitCompleted: null));
 
+                                          // ignore: use_build_context_synchronously
                                           Navigator.of(context).push(
                                               MaterialPageRoute(
                                                   builder: (context) =>
@@ -162,19 +174,20 @@ class _HomePageState extends State<HomePage>
                         },
                       ),
                       const Divider(),
-                       ListTile(
+                      ListTile(
                         leading: const CircleAvatar(
                           backgroundImage:
                               AssetImage('lib/assets/images/brain-power.png'),
                         ),
-                        title:  CustomText(text: 'Voice Notes', color: black, fontSize: 15),
-                        subtitle:
-                            const Text('Adding voice notes to remember things for later'),
-                            onTap: (){
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>TaskHomePage()));
-                            },
+                        title: CustomText(
+                            text: 'Voice Notes', color: black, fontSize: 15),
+                        subtitle: const Text(
+                            'Adding voice notes to remember things for later'),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => TaskHomePage()));
+                        },
                       ),
-                      
                     ],
                   ),
                   height: 250,
@@ -190,13 +203,11 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-
   getdates(DateTime startDate) {
-  for (DateTime date = DateTime.now();
-      date.isAfter(startDate);
-      date = date.subtract(const Duration(days: 1))) {
-    dateList.add(DateTime(date.year, date.month, date.day, 0, 0, 0));
+    for (DateTime date = DateTime.now();
+        date.isAfter(startDate);
+        date = date.subtract(const Duration(days: 1))) {
+      dateList.add(DateTime(date.year, date.month, date.day, 0, 0, 0));
+    }
   }
-}
-
 }

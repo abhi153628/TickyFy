@@ -12,7 +12,7 @@ import 'package:tickyfy/model/model_class/user_model.dart';
 
 
 class SignupPage extends StatefulWidget {
-  // ignore: prefer_const_constructors_in_immutables
+  // ignore: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
   SignupPage({Key? key});
 
   @override
@@ -142,14 +142,15 @@ class _SignupPageState extends State<SignupPage> {
                           Colors.red,
                         );
                       } else {
-                        print('object');
+                      
                         await addUser(User(
                           username: userController.text,
                           password: passwordController.text,
                         ));
+                        // ignore: use_build_context_synchronously
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                            builder: (context) => ProfilePage(),
+                            builder: (context) => const ProfilePage(),
                           ),
                           (route) => false,
                         );
@@ -175,7 +176,7 @@ class _SignupPageState extends State<SignupPage> {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (ctx) => LoginPage()));
+                        MaterialPageRoute(builder: (ctx) => const LoginPage()));
                   },
                   child: Text(
                     'Login',

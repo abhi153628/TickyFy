@@ -4,7 +4,7 @@ class ShowDialogueBox extends StatelessWidget {
   final String? title;
   final String? content;
 
-  ShowDialogueBox({Key? key, this.title, this.content}) : super(key: key);
+   ShowDialogueBox({Key? key, this.title, this.content}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class ShowDialogueBox extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(
+          child: const Text(
             'Close',
             style: TextStyle(
               color: Colors.blue,

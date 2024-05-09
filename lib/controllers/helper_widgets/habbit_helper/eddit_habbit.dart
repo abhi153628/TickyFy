@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tickyfy/Views/task_screens/localnotifi.dart';
 import 'package:tickyfy/model/model_class/habit_model.dart';
+import 'package:tickyfy/controllers/custom_widgets/color_controller.dart';
+import 'package:tickyfy/controllers/custom_widgets/snackbar.dart';
 
 // ignore: must_be_immutable
 class EditHabbitBottomSheet extends StatefulWidget {
@@ -13,7 +16,7 @@ class EditHabbitBottomSheet extends StatefulWidget {
       required this.habbit,
       required this.onpressed,
       required this.controller,
-      required this.controller1});
+      required this.controller1});            
 
   @override
   State<EditHabbitBottomSheet> createState() => _EditHabbitBottomSheetState();
@@ -22,6 +25,10 @@ class EditHabbitBottomSheet extends StatefulWidget {
 class _EditHabbitBottomSheetState extends State<EditHabbitBottomSheet> {
   late TextEditingController nameController;
   late TextEditingController questionController;
+  String? selectedItem;
+  TimeOfDay? selectedTime;
+  bool isButtonPressed = false;
+  bool isReminderOn = false;
 
   @override
   void initState() {
@@ -33,17 +40,22 @@ class _EditHabbitBottomSheetState extends State<EditHabbitBottomSheet> {
     questionController.text = widget.habbit.habbitQuestion!;
   }
 
-  String? selectedItem;
-
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  bool isButtonPressed = false;
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (pickedTime != null) {
+      setState(() {
+        selectedTime = pickedTime;
+      });
+    }
+  }
 
-  final List<String> _dropdownItems = [
-    'Daily',
-    'Weekly',
-    'Monthly',
-  ];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -89,25 +101,34 @@ class _EditHabbitBottomSheetState extends State<EditHabbitBottomSheet> {
             const SizedBox(
               height: 8,
             ),
-            DropdownButtonFormField(
-              value: selectedItem,
-              items: _dropdownItems.map((item) {
-                return DropdownMenuItem(
-                  value: item,
-                  child: Text(item),
-                );
-              }).toList(),
-              onChanged: (value) {
-                selectedItem = value;
-              },
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Frequency',
-                  hintText: 'Every day'),
-            ),
-            const SizedBox(
-              height: 23,
-            ),
+             //time picker
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _selectTime(context);
+                    },
+                    child: Text(selectedTime != null
+                        ? 'Time selected: ${selectedTime!.format(context)}'
+                        : 'Select Time'),
+                  ),
+                  Spacer(),
+                  //toggle button for remainder
+             Switch(
+          value: isReminderOn,
+          onChanged: remainderToggle,
+          activeTrackColor: Colors.lightGreenAccent,
+          activeColor: Colors.green,
+        ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 23,
+              ),
+
+          
+          
             // ignore: prefer_const_constructors
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -127,5 +148,20 @@ class _EditHabbitBottomSheetState extends State<EditHabbitBottomSheet> {
         ),
       ),
     );
+  }
+    void remainderToggle(bool value)
+  {
+    setState(() {
+      isReminderOn=value;
+    });
+    if(isReminderOn){
+      //sheduling the notification it is on
+      LocalNotificationService.showDailyScheduledNotification(time: selectedTime, question: '');
+      showSnackbar(context, 'Notification sheduled', red);
+
+    }else{
+      LocalNotificationService.cancelNotification(3);
+      showSnackbar(context, 'notification canceled', red);
+    }
   }
 }

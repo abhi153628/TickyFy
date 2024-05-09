@@ -25,8 +25,6 @@ class CustomPageRoute extends PageRouteBuilder {
             var slideAnimation =
                 Tween(begin: begin, end: end).animate(CurvedAnimation(parent: animation, curve: curve));
 
-            var scaleAnimation =
-                Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: animation, curve: curve));
 
             var fadeAnimation =
                 Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: animation, curve: curve));

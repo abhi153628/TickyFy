@@ -10,9 +10,7 @@ import 'package:tickyfy/model/database/habbit_db_fnctions.dart';
 import 'package:tickyfy/model/model_class/habit_model.dart';
 
 // ignore: must_be_immutable
-class HabbitShowPage extends StatelessWidget {
-  final TextEditingController habbitNameController = TextEditingController();
-  final TextEditingController questionController = TextEditingController();
+class HabbitShowPage extends StatefulWidget {
   final HabitModel habit;
 
   HabbitShowPage({
@@ -21,12 +19,22 @@ class HabbitShowPage extends StatelessWidget {
   });
 
   @override
+  State<HabbitShowPage> createState() => _HabbitShowPageState();
+}
+
+class _HabbitShowPageState extends State<HabbitShowPage> {
+  final TextEditingController habbitNameController = TextEditingController();
+
+  final TextEditingController questionController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: homePageColor,
       appBar: AppBar(
         backgroundColor: homePageColor,
         actions: [
+          //edit button
           IconButton(
             onPressed: () async {
               showModalBottomSheet(
@@ -34,8 +42,8 @@ class HabbitShowPage extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return NotificationListener(
-                    child: CustomBottomSheet(
-                      content: Column(
+                    child: 
+                       Column(
                         children: [
                           EditHabbitBottomSheet(
                             controller1: questionController,
@@ -43,29 +51,29 @@ class HabbitShowPage extends StatelessWidget {
                             onpressed: () async {
                               if (habbitNameController.text.isEmpty) {
                               } else {
-                                // new instance with updated values
+                               
                                 HabitModel updatedHabit = HabitModel(
                                   habbitName: habbitNameController.text,
                                   habbitQuestion: questionController.text,
                                   // keep the existing habbitCompleted and remainder
-                                  habbitCompleted: habit.habbitCompleted,
-                                  remainder: habit.remainder,
+                                  habbitCompleted: widget.habit.habbitCompleted,
+                                  remainder: widget.habit.remainder,
                                 );
 
                                 // Use the updatedHabit instance for the update
                                 await HabitDBFunctions()
-                                    .editHabbit(habit.key, updatedHabit);
+                                    .editHabbit(widget.habit.key, updatedHabit);
                                 // ignore: use_build_context_synchronously
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => const HomePage()));
                               }
                             },
-                            habbit: habit,
+                            habbit: widget.habit,
                           )
                         ],
                       ),
-                      height: 800,
-                    ),
+                    
+                    
                   );
                 },
               );
@@ -76,7 +84,7 @@ class HabbitShowPage extends StatelessWidget {
           IconButton(
             onPressed: () async {
               HabitDBFunctions ab = HabitDBFunctions();
-              await ab.deleteHabbit(habit.key.toString()).then(
+              await ab.deleteHabbit(widget.habit.key.toString()).then(
                     (value) => Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const HomePage(),
@@ -105,7 +113,7 @@ class HabbitShowPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 2, left: 10),
                         child: CustomText(
-                          text: habit.habbitName,
+                          text: widget.habit.habbitName,
                           color: DarkPurple,
                           fontSize: 25,
                         ),
@@ -113,7 +121,7 @@ class HabbitShowPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 24, left: 10),
                         child: CustomText(
-                            text: habit.habbitQuestion ?? '',
+                            text: widget.habit.habbitQuestion ?? '',
                             color: DarkPurple,
                             fontSize: 16),
                       ),
@@ -121,47 +129,8 @@ class HabbitShowPage extends StatelessWidget {
                   );
                 }),
           ),
-          SizedBox(height: 480),
-          Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(19), color: DarkPurple),
-              height: 150,
-              width: 386,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: CustomText(text: '0 day', color: white, fontSize: 40),
-                  ),
-                 
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: CustomText(
-                        text: 'Your current streak',
-                        color: white,
-                        fontSize: 13),
-                  ),
-          SizedBox(width: 15),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Row(
-                      children: [ Icon(
-                    Icons.star,
-                    size: 29,color: white,
-                  ),                  SizedBox(width: 10),
-
-                        CustomText(text: '0 day', color: white, fontSize: 15),
-                      ],
-                    ),
-                  ),
-               SizedBox(width: 10),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: CustomText(text: 'Your longest streak', color: white, fontSize: 13),
-                  ),
-                ],
-              )),
+          
+         
         ],
       ),
     );
