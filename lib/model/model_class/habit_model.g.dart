@@ -20,7 +20,7 @@ class HabitModelAdapter extends TypeAdapter<HabitModel> {
       habbitName: fields[0] as String,
       habbitQuestion: fields[1] as String?,
       habbitCompleted: (fields[2] as Map?)?.cast<DateTime, bool>(),
-      remainder: fields[3] as TimeOfDay?,
+      checkedDaysCount: fields[3] as int?,
     );
   }
 
@@ -35,7 +35,7 @@ class HabitModelAdapter extends TypeAdapter<HabitModel> {
       ..writeByte(2)
       ..write(obj.habbitCompleted)
       ..writeByte(3)
-      ..write(obj.remainder);
+      ..write(obj.checkedDaysCount);
   }
 
   @override

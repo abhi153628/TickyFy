@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tickyfy/controllers/custom_widgets/color_controller.dart';
 
 // ignore: must_be_immutable
 class CustomElevatedButton extends StatefulWidget {
@@ -8,7 +9,7 @@ class CustomElevatedButton extends StatefulWidget {
   double? fontSize;
   VoidCallback onpressed;
 
-  CustomElevatedButton({
+  CustomElevatedButton({super.key, 
     required this.text,
     required this.onpressed,
     this.icon,
@@ -36,8 +37,8 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
           borderRadius: BorderRadius.circular(60),
         ),
         elevation: 5,
-        primary: Color.fromARGB(255, 0, 0, 0),
-        shadowColor: Color.fromARGB(255, 0, 0, 0).withOpacity(0.9),
+      
+        shadowColor: black.withOpacity(0.9),
       ),
       child: Ink(
         decoration: BoxDecoration(
@@ -55,12 +56,12 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
           constraints: const BoxConstraints(minWidth: 90, minHeight: 36),
           alignment: Alignment.center,
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.login, color: Color.fromARGB(255, 0, 0, 0)),
-                SizedBox(width: 20),
+                Icon(Icons.login, color: black),
+                const SizedBox(width: 20),
                 Text(
                   widget.text,
                   style: GoogleFonts.alegreyaSans(

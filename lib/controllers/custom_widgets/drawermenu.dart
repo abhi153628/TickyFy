@@ -4,10 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tickyfy/Views/auth_pages/about.dart';
 import 'package:tickyfy/Views/auth_pages/privacypolicy.dart';
 import 'package:tickyfy/Views/auth_pages/profile_page.dart';
-import 'package:tickyfy/Views/auth_pages/signup_page.dart';
-import 'package:tickyfy/Views/habbits_page/habbit_home.dart';
 import 'package:tickyfy/controllers/custom_widgets/color_controller.dart';
-import 'package:tickyfy/controllers/custom_widgets/elevated_button.dart';
 import 'package:tickyfy/controllers/custom_widgets/textstyle.dart';
 import 'package:tickyfy/model/database/auth_db_functions.dart';
 
@@ -167,23 +164,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           );
                         },
                       ),
-                      SizedBox(
-                          width: 150,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: 280,
-                            ),
-                            child: CustomElevatedButton(
-                              text: 'Logout',
-                              onpressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => SignupPage()));
-                              },
-                            ),
-                          )),
+                   
                           CustomText(text: 'Version No 1.0.0', color: white, fontSize: 12)
-                          
-                          
+                       
                     ],
                     
                   ),

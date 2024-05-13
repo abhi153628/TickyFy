@@ -2,12 +2,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:tickyfy/Views/habbits_page/habbit_home.dart';
 import 'package:tickyfy/controllers/custom_widgets/snackbar.dart';
 import 'package:tickyfy/model/database/auth_db_functions.dart';
-
-
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -140,18 +137,24 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: ElevatedButton(
                                 onPressed: () async {
                                   if (profilenameController.text.isNotEmpty) {
-                                    await addProfile(_image!.path,
-                                        profilenameController.text);
+                                    //adding profile if the profile name is not empty
+                                    if (_image != null) {
+                                      await addProfile(_image!.path,
+                                          profilenameController.text);
+                                    }
+                                    isLogin();
                                     // ignore: use_build_context_synchronously
                                     Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const HomePage()));
+                                      MaterialPageRoute(
+                                        builder: (context) => const HomePage(),
+                                      ),
+                                    );
                                   } else {
                                     showSnackbar(
-                                        context,
-                                        'Please type yor name',
-                                        const Color.fromARGB(255, 255, 0, 0));
+                                      context,
+                                      'Please type your name',
+                                      const Color.fromARGB(255, 255, 0, 0),
+                                    );
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

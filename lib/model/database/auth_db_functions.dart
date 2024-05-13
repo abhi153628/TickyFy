@@ -9,13 +9,18 @@ Future addUser(User user) async {
 }
 
 //adding profile name and profile image function 'addProfile'
-Future addProfile(String? image, String? name) async {
+Future addProfile(String image, String name) async {
   final Box<User> box = await Hive.openBox<User>('users');
   var user = box.values.first;
   user.image = image;
   user.name = name;
   await box.put(0, user);
   box.close();
+}
+Future <bool> isLogin()async{
+   final  box = await Hive.openBox<User>('users');
+   return box.isEmpty;
+
 }
 
 //getting the user function
@@ -71,4 +76,5 @@ Future<bool?> CheckLogin() async {
   } finally {
     box.close();
   }
+  
 }

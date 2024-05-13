@@ -91,7 +91,8 @@ class _TaskHomePageState extends State<TaskHomePage>
                               spokenWords: value[index].spokenWords );
                         }),
                   ),
-                ]): const Center(
+                ])
+                : const Center(
               child: Text('Add Voices'),
             );
               }),
@@ -133,6 +134,8 @@ class _TaskHomePageState extends State<TaskHomePage>
                                 spokenWords: _wordsSpoken.value,
                               )).then((_) =>Navigator.of(context).pop() );
                              taskController.text='';
+                                  _wordsSpoken.value = '';
+                             
 
                               // ignore: use_build_context_synchronously
                               

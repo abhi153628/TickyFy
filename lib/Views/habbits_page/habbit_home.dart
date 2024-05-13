@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tickyfy/Views/habbits_page/habbit_showpage.dart';
 import 'package:tickyfy/Views/task_screens/localnotifi.dart';
 import 'package:tickyfy/Views/task_screens/task_home.dart';
+import 'package:tickyfy/controllers/custom_widgets/snackbar.dart';
 import 'package:tickyfy/controllers/helper_widgets/habbit_helper/add_habbit.dart';
 import 'package:tickyfy/controllers/custom_widgets/animationbutton.dart';
 import 'package:tickyfy/controllers/helper_widgets/habbit_helper/checkbox.dart';
 import 'package:tickyfy/controllers/custom_widgets/color_controller.dart';
 import 'package:tickyfy/controllers/custom_widgets/fab_button.dart';
-import 'package:tickyfy/controllers/helper_widgets/habbit_helper/habbit_tile.dart'; //home page
+import 'package:tickyfy/controllers/helper_widgets/habbit_helper/habbit_tile.dart'; 
 import 'package:tickyfy/controllers/custom_widgets/textstyle.dart';
 import 'package:tickyfy/model/database/habbit_db_fnctions.dart';
 import 'package:tickyfy/model/model_class/habit_model.dart';
@@ -26,13 +29,16 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   final TextEditingController habbitNameController = TextEditingController();
   final TextEditingController questionController = TextEditingController();
-    void scheduleNotification() {
-    
+  void scheduleNotification() {
     LocalNotificationService.showDailyScheduledNotification(
-      time: const TimeOfDay(hour: 8, minute: 0), 
-      question: questionController.text, 
+      time: const TimeOfDay(hour: 8, minute: 0),
+      question: questionController.text,
     );
   }
+
+  Map<String, int> checkedDaysCountMap = {};
+
+//list of dates
   List<DateTime> dateList = [];
   @override
   void initState() {
@@ -62,6 +68,9 @@ class _HomePageState extends State<HomePage>
                         child: ListView.builder(
                             itemCount: value.length,
                             itemBuilder: (BuildContext context, int index) {
+                              final habit = value[index];
+                              final checkedDaysCount =
+                                  checkedDaysCountMap[habit.habbitName] ?? 0;
                               return HabbitTile(
                                 habbitQuestion: value[index].habbitQuestion,
                                 habbitName: value[index].habbitName,
@@ -72,15 +81,22 @@ class _HomePageState extends State<HomePage>
                                           HabbitShowPage(habit: value[index]),
                                       onTap: () {
                                         Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    HabbitShowPage(
-                                                      habit: value[index],
-                                                    ),),);
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                HabbitShowPage(
+                                              habit: habit,
+                                            ),
+                                          ),
+                                        );
                                       },
+                                      //passing the count to habbit tile
+                                      checkedDaysCount: checkedDaysCount,
                                     ),
                                   );
-                                }, habit: value[index],
+                                },
+                                habit: value[index],
+                                days: '',
+                                checkedDaysCount: checkedDaysCount,
                               );
                             }),
                       ),
@@ -96,15 +112,21 @@ class _HomePageState extends State<HomePage>
                                 Text(DateFormat('E').format(dateList[index])),
                                 Text('${dateList[index].day}'),
                                 ...value.map((e) => CheckBox(
-                                    initialValue:
-                                        e.habbitCompleted?[dateList[index]] ??
-                                            false,
-                                    onChanged: (isChecked) {
-                                      HabitDBFunctions().updateCompletion(
-                                          dateList[index],
-                                          isChecked ?? false,
-                                          e.habbitName);
-                                    })),
+                                      initialValue:
+                                          e.habbitCompleted?[dateList[index]] ??
+                                              false,
+                                      onChanged: (isChecked) {
+                                        HabitDBFunctions().updateCompletion(
+                                            dateList[index],
+                                            isChecked ?? false,
+                                            e.habbitName);
+                                      },
+                                      ontapped: (count,ischecked) {
+                                        updateCheckedDaysCount(e.habbitName,ischecked);
+                                        setState(() {});
+                                      },
+                                      habitname: '',
+                                    )),
                                 if (index != dateList.length - 1)
                                   const Divider(),
                               ],
@@ -115,8 +137,13 @@ class _HomePageState extends State<HomePage>
                 );
               },
             )
-          : const Center(
-              child: Text('Add habbits'),
+          : Center(
+              child: SizedBox(
+                height: 200,
+                child: Lottie.asset(
+                  "lib/animated_assets/Animation - 1715260002815.json",
+                ),
+              ),
             ),
       floatingActionButton: AddButton(
         onpressed: () {
@@ -150,19 +177,31 @@ class _HomePageState extends State<HomePage>
                                       onpressed: () async {
                                         if (habbitNameController.text.isEmpty) {
                                         } else {
-                                          await HabitDBFunctions().addHabbit(
-                                              HabitModel(
-                                                  habbitName:
-                                                      habbitNameController.text,
-                                                  habbitQuestion:
-                                                      questionController.text,
-                                                  habbitCompleted: null));
-
-                                          // ignore: use_build_context_synchronously
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const HomePage()));
+                                          if (habbitNotifierList.value.length <
+                                              3) {
+                                            await HabitDBFunctions()
+                                                .addHabbit(
+                                                    HabitModel(
+                                                        habbitName:
+                                                            habbitNameController
+                                                                .text,
+                                                        habbitQuestion:
+                                                            questionController
+                                                                .text,
+                                                        habbitCompleted: null));
+                                            // ignore: use_build_context_synchronously
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const HomePage()));
+                                          } else {
+                                            Navigator.of(context).pop();
+                                            Navigator.of(context).pop();
+                                            showSnackbar(
+                                                context,
+                                                'you reached the maximum habits',
+                                                red);
+                                          }
                                         }
                                       },
                                     )
@@ -201,6 +240,37 @@ class _HomePageState extends State<HomePage>
       //drawer
       drawer: const CustomDrawer(),
     );
+  }
+
+  //method to update the count of checked days for each habit
+  void updateCheckedDaysCount(String habitname,bool isChecked) async{
+    print('sd88888888888888888888s');
+    HabitModel? habit = await Hive.box<HabitModel>('habbitbox').get(habitname);
+  if(habit!= null){
+    if(isChecked){
+   habit.checkedDaysCount = (habit.checkedDaysCount ?? 0) + 1;
+    }else{
+      habit.checkedDaysCount = (habit.checkedDaysCount ?? 0) -1;
+    }
+    await habit.save();
+    
+  }
+   
+
+    await habit?.save(); 
+    
+    setState(() {});
+  }
+
+  void loadCheckedDaysCount() async {
+    Box<HabitModel> habitsBox = await Hive.openBox<HabitModel>('habits');
+  
+    for (String habitName in habbitNotifierList.value.map((e) => e.habbitName)) {
+      HabitModel habit = habitsBox.get(habitName)!;
+      checkedDaysCountMap[habitName] = habit.checkedDaysCount!;
+    }
+  
+    setState(() {});
   }
 
   getdates(DateTime startDate) {

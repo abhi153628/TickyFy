@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:tickyfy/model/database/habbit_db_fnctions.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 class LocalNotificationService {
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+  // ignore: avoid_types_as_parameter_names
   static onTap(NotificationResponse) {}
 
   static Future init() async {
@@ -28,7 +30,8 @@ class LocalNotificationService {
       await flutterLocalNotificationsPlugin.zonedSchedule(
         3,
         'TickyFy',
-        'Did you do your habit',
+        //intializing as mt
+        '',
         tz.TZDateTime.from(scheduledDateTime, tz.local),
         const NotificationDetails(
           android: AndroidNotificationDetails(
@@ -41,7 +44,21 @@ class LocalNotificationService {
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
         payload: 'daily_notification',
+        // ignore: deprecated_member_use
+        androidAllowWhileIdle: true,
       );
+      //unotification as habit question
+      habbitNotifierList.addListener(() {final habbitQuestion =habbitNotifierList.value.firstOrNull?.habbitQuestion?? '';flutterLocalNotificationsPlugin.zonedSchedule(3, 'TickFy', habbitQuestion,  tz.TZDateTime.from(scheduledDateTime, tz.local),    const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'id4',
+            'Daily Scheduled Notification',
+            importance: Importance.max,
+            priority: Priority.high,
+          ),
+        ), uiLocalNotificationDateInterpretation:   UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time,
+        payload: 'daily_notification',
+        androidAllowWhileIdle: true, );});
     }
   }
 

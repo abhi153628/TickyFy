@@ -57,7 +57,7 @@ class _HabbitShowPageState extends State<HabbitShowPage> {
                                   habbitQuestion: questionController.text,
                                   // keep the existing habbitCompleted and remainder
                                   habbitCompleted: widget.habit.habbitCompleted,
-                                  remainder: widget.habit.remainder,
+                              
                                 );
 
                                 // Use the updatedHabit instance for the update

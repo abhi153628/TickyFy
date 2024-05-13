@@ -6,6 +6,6 @@ void showSnackbar(BuildContext context, String message, Color color) {
     backgroundColor: color,
     content: Text(message),
     // ignore: prefer_const_constructors
-    duration: Duration(milliseconds: 1),
+    duration: Duration(seconds: 1),
   ));
 }

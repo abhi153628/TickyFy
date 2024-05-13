@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tickyfy/Views/auth_pages/about.dart';
 import 'package:tickyfy/Views/auth_pages/login_page.dart';
-import 'package:tickyfy/Views/auth_pages/signup_page.dart';
+import 'package:tickyfy/Views/auth_pages/profile_page.dart';
 import 'package:tickyfy/controllers/custom_widgets/color_controller.dart';
 import 'package:tickyfy/controllers/custom_widgets/elevated_button.dart';
 
@@ -69,11 +70,11 @@ class WelomePage extends StatelessWidget {
                                 onpressed: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => const LoginPage(),
+                                      builder: (context) => const ProfilePage(),
                                     ),
                                   );
                                 },
-                                text: 'Login',
+                                text: "Let's Start",
                                 fontSize: 22,
                               ),
                             ),
@@ -84,17 +85,17 @@ class WelomePage extends StatelessWidget {
                               onPressed: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => SignupPage(),
+                                    builder: (context) => AboutPage(),
                                   ),
                                 );
-                                //navigation of signup button
+                               
                               },
                               style: OutlinedButton.styleFrom(
                                 side: BorderSide(
                                     color: white),
                               ),
                               child: Text(
-                                'Sign Up',
+                                'About App',
                                 style: GoogleFonts.aBeeZee(
                                     color:white),
                               ),

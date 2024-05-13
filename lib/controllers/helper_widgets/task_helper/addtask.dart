@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 import 'package:tickyfy/controllers/custom_widgets/color_controller.dart';
 import 'package:tickyfy/controllers/custom_widgets/textstyle.dart';
 
+// ignore: must_be_immutable
 class AddTaskSheet extends StatefulWidget {
   VoidCallback? onpressed;
   TextEditingController? controller;
@@ -39,13 +39,14 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
   // animation when mic is pressed
   bool _micPressed = false;
 
-  void togleAnimation() {
+  void toggleAnimation() {
     setState(() {
       _micPressed = !_micPressed;
     });
   }
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -68,17 +69,13 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
               },
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Voice Tittle',
+                labelText: 'Voice Title',
                 hintText: 'e.g Starting to do journal',
               ),
             ),
             Row(
               children: [
-                SizedBox(
-                    height: 45,
-                    child: Lottie.asset(
-                      'lib/animated_assets/Animation - 1707054868466 (1).json',
-                    )),
+              
                 CustomText(
                     text: 'Try TickyFy Transcriber !',
                     color: DarkPurple,
@@ -86,7 +83,7 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
               ],
             ),
 
-            //!this is the speech to text convertion text
+            //! This is the speech to text conversion text
             ValueListenableBuilder(
                 valueListenable: widget.text3,
                 builder: (context, text, _) {
@@ -94,15 +91,20 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                       child:
                           CustomText(text: text, color: black, fontSize: 20));
                 }),
-            //condition to be passed
+            // Condition to be passed
             if (widget.condition) const SizedBox(height: 80),
             CustomText(
-                text: "'Tap the mic to talk'", color: DarkPurple, fontSize: 15),
+                text: "'Tap the mic to talk'",
+                color: DarkPurple,
+                fontSize: 15),
 
             Padding(
               padding: const EdgeInsets.only(left: 22),
               child: FloatingActionButton(
-                onPressed: widget.onpressed2,
+                onPressed: () {
+                  toggleAnimation(); // Toggle the animation
+                  widget.onpressed2(); // Call the onPressed callback
+                },
                 tooltip: 'Listen',
                 backgroundColor: Colors.transparent,
                 elevation: 0,
@@ -126,19 +128,26 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
               padding: const EdgeInsets.only(
                 top: 1,
               ),
-              //text for that confidence:
+              // Text for confidence level
               child: Text(
                 widget.text2,
                 style: GoogleFonts.aBeeZee(
                     fontSize: 13, fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.only(left: 228),
               child: ElevatedButton(
-                  onPressed: widget.onpressed, child: Text("save Words")),
-            )
+                  onPressed: widget.onpressed, child: const Text("Save Words")),
+            ),
+              _micPressed
+                    ? SizedBox(height: 40,
+                      child: Lottie.asset(
+                          'lib/animated_assets/Animation - 1715260002815.json',
+                       ),
+                    )
+                    : Container(),
           ],
         ),
       ),

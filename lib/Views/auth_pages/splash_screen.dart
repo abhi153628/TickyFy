@@ -1,14 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tickyfy/Views/auth_pages/onboarding_page.dart';
-
 import 'package:tickyfy/Views/habbits_page/habbit_home.dart';
-import 'package:tickyfy/model/database/auth_db_functions.dart';
 import 'package:tickyfy/model/database/habbit_db_fnctions.dart';
 import 'package:tickyfy/model/database/task_db.dart';
-
+import 'package:tickyfy/model/model_class/user_model.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,10 +21,12 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void initState() {
-    gotoNextPage();
+  DecisionWhereToGo();
+  print('fdfdfdf56557654658798978956776667788899889798777989798098975656567679780909-09089778787878789899878979878978877777');
     intialiseTaskData();
     intialiseShowData();
     super.initState();
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 750),
@@ -35,7 +35,8 @@ class _SplashScreenState extends State<SplashScreen>
       if (_controller.status == AnimationStatus.completed) {
         setState(() {});
       }
-    });
+    }
+    );
   }
 
   @override
@@ -58,40 +59,41 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 
-  goToWelcome(context) async {
-    await Future.delayed(const Duration(milliseconds: 5200));
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (ctx) => OnBoardingPage(),
-      ),
-    );
-  }
 
-  goToHome(context) async {
-    await Future.delayed(const Duration(milliseconds: 3600));
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (ctx) => const HomePage(),
-      ),
-    );
-  }
 
-  gotoNextPage() async {
-    bool? check = await CheckLogin();
-    if (check == true) {
-      goToHome(context);
-    } else {
-      goToWelcome(context);
-    }
-  }
+
+
+
 
   intialiseShowData() async {
     HabitDBFunctions abi = HabitDBFunctions();
     await abi.getHabbit();
   }
-    intialiseTaskData() async {
-    TaskDbFunctions abi =TaskDbFunctions();
+
+  intialiseTaskData() async {
+    TaskDbFunctions abi = TaskDbFunctions();
     await abi.getTask();
+  }
+
+  Future<void> DecisionWhereToGo() async {
+  await Future.delayed(const Duration(seconds: 2));
+
+  bool checkLogin = await isLogin();
+  print(checkLogin);
+
+  if (checkLogin) {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
+      return const HomePage();
+    }));
+  } else {
+    print('User not logged in');
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => OnBoardingPage()));
   }
 }
 
+Future<bool> isLogin() async {
+  final box = await Hive.openBox<User>('users');
+  return box.isNotEmpty; // Check if box is not empty for logged in users
+}
+
+}

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tickyfy/controllers/custom_widgets/color_controller.dart';
 
 
 class MenuItem {
@@ -16,10 +15,10 @@ class CustomPopUpButton extends StatelessWidget {
 
 
   const CustomPopUpButton({
-    Key? key, 
+    super.key, 
     required this.items,
     required this.color,
-  }) : super(key: key); 
+  }); 
 
   @override
   Widget build(BuildContext context) {

@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 class CheckBox extends StatefulWidget {
   final bool initialValue;
   final Function(bool?)? onChanged;
+  final Function(int,bool)? ontapped;
+  final String habitname;
 
   const CheckBox({
     Key? key,
+    required this.ontapped,
+    required this.habitname,
     required this.initialValue,
     this.onChanged,
   }) : super(key: key);
@@ -16,6 +20,7 @@ class CheckBox extends StatefulWidget {
 
 class _CheckBoxState extends State<CheckBox> {
   late bool _isChecked;
+  int _tapCount = 0; 
 
   @override
   void initState() {
@@ -32,6 +37,8 @@ class _CheckBoxState extends State<CheckBox> {
           setState(() {
             _isChecked = !_isChecked;
             widget.onChanged?.call(_isChecked);
+             widget.ontapped?.call(_tapCount,_isChecked);
+        
           });
         },
         child: Container(
@@ -54,5 +61,7 @@ class _CheckBoxState extends State<CheckBox> {
         ),
       ),
     );
+ 
   }
+
 }

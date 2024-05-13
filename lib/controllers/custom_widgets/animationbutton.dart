@@ -4,7 +4,7 @@ class CustomPageRoute extends PageRouteBuilder {
   final Widget child;
   final Function() onTap;
 
-  CustomPageRoute({required this.child, required this.onTap})
+  CustomPageRoute({required this.child, required this.onTap, required checkedDaysCount})
       : super(
           pageBuilder: (
             BuildContext context,
