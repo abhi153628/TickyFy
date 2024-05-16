@@ -65,7 +65,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     padding: const EdgeInsets.only(
                                         top: 185, left: 115),
                                     child: Text(
-                                      snapshot.data!.name!,
+                                      snapshot.data!.username,
                                       style: GoogleFonts.alegreyaSans(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,

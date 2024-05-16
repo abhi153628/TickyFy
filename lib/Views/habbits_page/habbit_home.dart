@@ -97,7 +97,7 @@ Map<String, int> checkedDaysCountMap = {};
       body: habbitNotifierList.value.isNotEmpty
           ? SingleChildScrollView(
             child: SizedBox(
-              height: MediaQuery.of(context).size.height*(habbitNotifierList.value.length/19),
+              height:40.0*habbitNotifierList.value.length+40,
               width: MediaQuery.of(context).size.width,
               child: ValueListenableBuilder(
                   valueListenable: habbitNotifierList,
@@ -183,9 +183,7 @@ Map<String, int> checkedDaysCountMap = {};
           : Center(
               child: SizedBox(
                 height: 200,
-                child: Lottie.asset(
-                  "lib/animated_assets/Animation - 1715260002815.json",
-                ),
+                child: Text('Add Habits')
               ),
             ),
       floatingActionButton: AddButton(
