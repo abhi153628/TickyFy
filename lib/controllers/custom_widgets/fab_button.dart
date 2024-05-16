@@ -12,12 +12,12 @@ class AddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return  FloatingActionButton(
   onPressed:onpressed ,
-  backgroundColor:LightPurple,
+  backgroundColor:DarkPurple,
   shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(10),
+    borderRadius: BorderRadius.circular(15),
   ),
 
-  child: const Icon(Icons.add),
+  child:  Icon(Icons.add,color: white,),
  
 );
   }

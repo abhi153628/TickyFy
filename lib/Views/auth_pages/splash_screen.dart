@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
   DecisionWhereToGo();
-  print('fdfdfdf56557654658798978956776667788899889798777989798098975656567679780909-09089778787878789899878979878978877777');
+
     intialiseTaskData();
     intialiseShowData();
     super.initState();
@@ -75,18 +75,19 @@ class _SplashScreenState extends State<SplashScreen>
     await abi.getTask();
   }
 
+  // ignore: non_constant_identifier_names
   Future<void> DecisionWhereToGo() async {
   await Future.delayed(const Duration(seconds: 2));
 
   bool checkLogin = await isLogin();
-  print(checkLogin);
+
 
   if (checkLogin) {
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
       return const HomePage();
     }));
   } else {
-    print('User not logged in');
+
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => OnBoardingPage()));
   }
 }

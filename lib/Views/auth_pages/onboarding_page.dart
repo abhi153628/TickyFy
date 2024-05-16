@@ -65,9 +65,23 @@ class OnBoardingPage extends StatelessWidget {
                 introductionList: list,
                 backgroudColor: const Color.fromARGB(255, 153, 153, 255),
                 foregroundColor: const Color.fromARGB(255, 0, 0, 0),
-                onTapSkipButton: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const WelomePage())),
+                onTapSkipButton: () => Navigator.pushAndRemoveUntil(
+                  context,
+                  PageRouteBuilder(
+                    transitionDuration: const Duration(milliseconds: 500),
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const WelomePage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                  ),
+                  (Route<dynamic> route) =>
+                      false, // Removes all routes until this new route
+                ),
                 skipTextStyle: const TextStyle(
                   color: Color.fromARGB(255, 255, 255, 255),
                   fontSize: 18,

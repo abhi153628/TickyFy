@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class CheckBox extends StatefulWidget {
@@ -7,12 +9,12 @@ class CheckBox extends StatefulWidget {
   final String habitname;
 
   const CheckBox({
-    Key? key,
+    super.key,
     required this.ontapped,
     required this.habitname,
     required this.initialValue,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<CheckBox> createState() => _CheckBoxState();
@@ -20,7 +22,7 @@ class CheckBox extends StatefulWidget {
 
 class _CheckBoxState extends State<CheckBox> {
   late bool _isChecked;
-  int _tapCount = 0; 
+  final int _tapCount = 0; 
 
   @override
   void initState() {
@@ -37,31 +39,34 @@ class _CheckBoxState extends State<CheckBox> {
           setState(() {
             _isChecked = !_isChecked;
             widget.onChanged?.call(_isChecked);
-             widget.ontapped?.call(_tapCount,_isChecked);
-        
+            widget.ontapped?.call(_tapCount,_isChecked);
           });
         },
-        child: Container(
-          width: 24,
-          height: 24,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(
-              width: 2,
+        child: Row( // Wrap in a Row
+          children: [
+            Container(
+              width: 25,
+              height: 25,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(
+                  width: 2,
+                ),
+                color: _isChecked ? const Color.fromARGB(255, 0, 0, 0) : Colors.transparent,
+              ),
+              child: _isChecked
+                  ? const Icon(
+                      Icons.check,
+                      size: 20,
+                      color: Colors.white,
+                    )
+                  : null,
             ),
-            color: _isChecked ? const Color.fromARGB(255, 0, 0, 0) : Colors.transparent,
-          ),
-          child: _isChecked
-              ? const Icon(
-                  Icons.check,
-                  size: 20,
-                  color: Colors.white,
-                )
-              : null,
+            SizedBox(width: 8), // Add a SizedBox for spacing
+            Text(widget.habitname), // Your text
+          ],
         ),
       ),
     );
- 
   }
-
 }

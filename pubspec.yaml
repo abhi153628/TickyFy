@@ -71,10 +71,9 @@ flutter:
     -  lib/assets/images/9.png
     - lib/assets/images/
     - lib/assets/images/App_logo.png
-
     - lib/animated_assets/Animation - 1715260002815.json
-    
-    - lib/animated_assets/Animation - 1715258807373.json
+    - lib/animated_assets/Animation - 1715665057745.json
+  
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

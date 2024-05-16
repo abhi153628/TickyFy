@@ -4,22 +4,30 @@ import 'package:tickyfy/model/model_class/user_model.dart';
 //adding user function 'addUser'
 Future addUser(User user) async {
   final Box<User> box = await Hive.openBox<User>('users');
-  await box.add(user);
+
   box.close();
 }
 
 //adding profile name and profile image function 'addProfile'
 Future addProfile(String image, String name) async {
   final Box<User> box = await Hive.openBox<User>('users');
-  var user = box.values.first;
+  if(box.length==0)
+  {
+    User user=User(username: name, password: image);
+    await box.add(user);
+  }
+ else
+ {
+  var user=box.values.first;
   user.image = image;
   user.name = name;
   await box.put(0, user);
-  box.close();
+ }
+ await box.close();
 }
 Future <bool> isLogin()async{
    final  box = await Hive.openBox<User>('users');
-   return box.isEmpty;
+   return box.isNotEmpty;
 
 }
 
@@ -69,6 +77,7 @@ setCheckLogin(bool login) async {
   box.close();
 }
 
+// ignore: non_constant_identifier_names
 Future<bool?> CheckLogin() async {
   final Box<bool> box = await Hive.openBox<bool>('users');
   try {

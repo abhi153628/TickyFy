@@ -1,4 +1,5 @@
-import 'dart:math';
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:tickyfy/model/database/habbit_db_fnctions.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
@@ -20,12 +21,15 @@ class LocalNotificationService {
         onDidReceiveNotificationResponse: onTap);
   }
 
-  static Future<void> showDailyScheduledNotification({TimeOfDay? time, required String question}) async {
-    if (time!= null) {
+  static Future<void> showDailyScheduledNotification(
+      {TimeOfDay? time, required String question}) async {
+    if (time != null) {
       tz.initializeTimeZones();
-      tz.setLocalLocation(tz.getLocation('Asia/Kolkata')); // Set your desired time zone
+      tz.setLocalLocation(
+          tz.getLocation('Asia/Kolkata')); // Set your desired time zone
       final now = DateTime.now();
-      final scheduledDateTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+      final scheduledDateTime =
+          DateTime(now.year, now.month, now.day, time.hour, time.minute);
 
       await flutterLocalNotificationsPlugin.zonedSchedule(
         3,
@@ -41,24 +45,36 @@ class LocalNotificationService {
             priority: Priority.high,
           ),
         ),
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
         payload: 'daily_notification',
         // ignore: deprecated_member_use
         androidAllowWhileIdle: true,
       );
       //unotification as habit question
-      habbitNotifierList.addListener(() {final habbitQuestion =habbitNotifierList.value.firstOrNull?.habbitQuestion?? '';flutterLocalNotificationsPlugin.zonedSchedule(3, 'TickFy', habbitQuestion,  tz.TZDateTime.from(scheduledDateTime, tz.local),    const NotificationDetails(
-          android: AndroidNotificationDetails(
-            'id4',
-            'Daily Scheduled Notification',
-            importance: Importance.max,
-            priority: Priority.high,
+      habbitNotifierList.addListener(() {
+        final habbitQuestion =
+          question;
+        flutterLocalNotificationsPlugin.zonedSchedule(
+          3,
+          'TickFy',
+          habbitQuestion,
+          tz.TZDateTime.from(scheduledDateTime, tz.local),
+          const NotificationDetails(
+            android: AndroidNotificationDetails(
+              'id4',
+              'Daily Scheduled Notification',
+              importance: Importance.max,
+              priority: Priority.high,
+            ),
           ),
-        ), uiLocalNotificationDateInterpretation:   UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.time,
-        payload: 'daily_notification',
-        androidAllowWhileIdle: true, );});
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          matchDateTimeComponents: DateTimeComponents.time,
+          payload: 'daily_notification',
+        );
+      });
     }
   }
 

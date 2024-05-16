@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tickyfy/Views/auth_pages/about.dart';
-import 'package:tickyfy/Views/auth_pages/login_page.dart';
+
 import 'package:tickyfy/Views/auth_pages/profile_page.dart';
 import 'package:tickyfy/controllers/custom_widgets/color_controller.dart';
 import 'package:tickyfy/controllers/custom_widgets/elevated_button.dart';
@@ -68,11 +68,23 @@ class WelomePage extends StatelessWidget {
                               height: 50,
                               child: CustomElevatedButton(
                                 onpressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => const ProfilePage(),
-                                    ),
-                                  );
+                                   Navigator.pushAndRemoveUntil(
+                  context,
+                  PageRouteBuilder(
+                    transitionDuration: const Duration(milliseconds: 500),
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const ProfilePage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                  ),
+                  (Route<dynamic> route) =>
+                      false, // Removes all routes until this new route
+                );
                                 },
                                 text: "Let's Start",
                                 fontSize: 22,
@@ -83,11 +95,23 @@ class WelomePage extends StatelessWidget {
                             ),
                             OutlinedButton(
                               onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => AboutPage(),
-                                  ),
-                                );
+                               Navigator.pushAndRemoveUntil(
+                  context,
+                  PageRouteBuilder(
+                    transitionDuration: const Duration(milliseconds: 500),
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const AboutPage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                  ),
+                  (Route<dynamic> route) =>
+                      false, 
+                );
                                
                               },
                               style: OutlinedButton.styleFrom(

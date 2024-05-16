@@ -1,9 +1,11 @@
+// ignore_for_file: library_private_types_in_public_api, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:tickyfy/Views/auth_pages/about.dart';
 import 'package:tickyfy/controllers/custom_widgets/color_controller.dart';
 import 'package:tickyfy/controllers/custom_widgets/drawermenu.dart';
 import 'package:tickyfy/controllers/custom_widgets/fab_button.dart';
-import 'package:tickyfy/controllers/custom_widgets/textstyle.dart';
 import 'package:tickyfy/controllers/helper_widgets/task_helper/addtask.dart';
 import 'package:tickyfy/controllers/helper_widgets/task_helper/tasktile.dart';
 import 'package:tickyfy/model/database/task_db.dart';
@@ -11,7 +13,8 @@ import 'package:tickyfy/model/model_class/task_model.dart';
 
 class TaskHomePage extends StatefulWidget {
   final TaskModel? task;
-  TaskHomePage({Key? key, this.task}) : super(key: key);
+  // ignore: prefer_const_constructors_in_immutables
+  TaskHomePage({super.key, this.task});
 
   @override
   _TaskHomePageState createState() => _TaskHomePageState();
@@ -26,7 +29,7 @@ class _TaskHomePageState extends State<TaskHomePage>
 
   @override
   void initState() {
-    // TODO: implement initState
+   
     super.initState();
     initSpeech();
   }
@@ -67,9 +70,52 @@ class _TaskHomePageState extends State<TaskHomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: homePageColor,
-       appBar: AppBar(
-        backgroundColor: homePageColor,
-        title:CustomText(text: 'Vocalize Your Goals', color: black, fontSize: 20)
+       appBar:  PreferredSize(
+        preferredSize: const Size.fromHeight(80), 
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(  bottomLeft: Radius.circular(30), 
+                bottomRight: Radius.circular(30),
+                topLeft: Radius.circular(30)),
+          child: AppBar(
+            backgroundColor: DarkPurple, 
+            elevation: 0, 
+            title: const Text(
+              'Vocalize Your Goals',
+              style: TextStyle(
+                fontSize: 22, // Customize font size
+                fontWeight: FontWeight.bold, // Customize font weight
+                color: Colors.white, // Customize text color
+              ),
+            ),
+            
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.info_outline_rounded,color: white,),
+                onPressed: () {
+                  Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                transitionDuration:
+                                    const Duration(milliseconds: 500),
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                       const AboutPage(),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                              ),
+                            );
+                  
+                },
+              ),
+            
+            ],
+          ),
+        ),
       ),
       body: ValueListenableBuilder(
               valueListenable: taskNotifierList,

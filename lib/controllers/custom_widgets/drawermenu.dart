@@ -93,10 +93,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                         top: 110, left: 110),
                                     child: IconButton(
                                         onPressed: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const ProfilePage()));
+                                           Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              transitionDuration:
+                                  const Duration(milliseconds: 500),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                     const ProfilePage(),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
                                         },
                                         icon: Icon(
                                           Icons.camera_alt,
@@ -122,17 +135,24 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           fontSize: 20,
                         ),
                         onTap: () {
-                          Navigator.push(
+                         Navigator.push(
                             context,
-                            MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                                  PrivacyPolicy(
-                                key: null,
-                              ),
+                            PageRouteBuilder(
+                              transitionDuration:
+                                  const Duration(milliseconds: 500),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                     PrivacyPolicy(),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
                             ),
                           );
-                        },
-                      ),
+           } ),
                       ListTile(
                         leading: Icon(
                           Icons.person,
@@ -152,7 +172,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                   const Duration(milliseconds: 500),
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                     AboutPage(),
+                                     const AboutPage(),
                               transitionsBuilder: (context, animation,
                                   secondaryAnimation, child) {
                                 return FadeTransition(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tickyfy/Views/habbits_page/habbit_home.dart';
+import 'package:tickyfy/controllers/custom_widgets/color_controller.dart';
 import 'package:tickyfy/controllers/custom_widgets/snackbar.dart';
 import 'package:tickyfy/model/database/auth_db_functions.dart';
 
@@ -20,7 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: const Color.fromARGB(200, 255, 253, 253),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -118,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   filled: true, // Enable filling
                                   fillColor:
-                                      const Color.fromARGB(205, 180, 180, 255),
+                                 LightPurple
                                 ),
                               ),
                             ),
@@ -142,19 +143,26 @@ class _ProfilePageState extends State<ProfilePage> {
                                       await addProfile(_image!.path,
                                           profilenameController.text);
                                     }
-                                    isLogin();
-                                    // ignore: use_build_context_synchronously
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => const HomePage(),
-                                      ),
-                                    );
+                                    if(await isLogin()) {
+                                      // ignore: use_build_context_synchronously
+                                   Navigator.pushAndRemoveUntil(
+  context,
+  PageRouteBuilder(
+    transitionDuration: const Duration(milliseconds: 500),
+    pageBuilder: (context, animation, secondaryAnimation) => const HomePage(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(
+        opacity: animation,
+        child: child,
+      );
+    },
+  ),
+  (Route<dynamic> route) => false, 
+);
+                                    }
+
                                   } else {
-                                    showSnackbar(
-                                      context,
-                                      'Please type your name',
-                                      const Color.fromARGB(255, 255, 0, 0),
-                                    );
+                                showCustomSnackbar(context, 'Warning', 'Please type your name', white);
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

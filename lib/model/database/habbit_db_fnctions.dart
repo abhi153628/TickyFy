@@ -50,7 +50,6 @@ Future editHabbit(int key, HabitModel updatedHabit) async {
     //?checks that each habbit contains the specific date
     final habit = box.values.firstWhere(
         (element) => element.habbitName==habbitname);
-        print(habit.habbitCompleted);
     // ?if found in the Hive box if statement will work
     //?assigns the value of date key to the new status
     habit.habbitCompleted?[date] = status;

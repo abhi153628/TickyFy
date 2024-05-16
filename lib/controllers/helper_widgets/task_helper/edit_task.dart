@@ -37,11 +37,24 @@ class EditTaskSheet extends StatefulWidget {
   @override
   State<EditTaskSheet> createState() => _EditTaskSheetState();
 }
-
 class _EditTaskSheetState extends State<EditTaskSheet> {
   // animation when mic is pressed
   bool _micPressed = false;
-
+//validation
+String? validateMaxLength(String? value) {
+if (value == null || value.isEmpty) {
+    return 'Please type the task name!';
+  } else if (value.trim().isEmpty) {
+    return 'Task name cannot be empty spaces!';
+  } else if (value.length > 20) {
+    return 'Task name cannot exceed 20 characters!';
+  } else if (value.contains(RegExp(r'[0-9]')) ||
+      value.contains(RegExp(r'[!@#$%^&*(),?.":{}|<>]'))) {
+    return 'Task name cannot contain numbers or symbols!';
+  }
+return null;
+}
+//animation when mic pressed
   void togleAnimation() {
     setState(() {
       _micPressed = !_micPressed;
@@ -54,9 +67,6 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
   void initState() {
     controller=widget.controller;
     controller.text = widget.task.taskName;
-
-    
-
     super.initState();
   }
 
@@ -73,19 +83,37 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
+                              Row(mainAxisAlignment: MainAxisAlignment.start,
+                                children: [ const SizedBox(height: 8),
+                                  CustomText(text: 'Voice Title', color: black, fontSize: 12),
+                                ],
+                              ),
+
+             //!task field
             TextFormField(
+              style: TextStyle(color: white),
               controller: controller,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please give Voice note';
-                }
-                return null;
-              },
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Voice Tittle',
-                hintText: 'e.g Starting to do journal',
-              ),
+              validator: validateMaxLength,
+              decoration: InputDecoration(
+                  errorStyle: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 14),
+                 
+                  hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: white),
+                  filled: true,
+                  fillColor: DarkPurple,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                   borderSide: const BorderSide(width: 0, style: BorderStyle.none),
+                   
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                 borderSide: const BorderSide(width: 0, style: BorderStyle.none),
+                   
+                  ),
+                 
+                  hintText: 'e.g Starting to do journal',
+                ),
+             
             ),
             Row(
               children: [
@@ -117,7 +145,10 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
             Padding(
               padding: const EdgeInsets.only(left: 22),
               child: FloatingActionButton(
-                onPressed: widget.onpressed2,
+                onPressed:(){
+                  togleAnimation();
+                  widget.onpressed2;
+                },
                 tooltip: 'Listen',
                 backgroundColor: Colors.transparent,
                 elevation: 0,
@@ -152,13 +183,22 @@ class _EditTaskSheetState extends State<EditTaskSheet> {
             Padding(
               padding: const EdgeInsets.only(left: 228),
               child: ElevatedButton(
-                  onPressed: () {
-                    widget.task.taskName = controller.text;
-                    // widget.task?.spokenWords;
-                    widget.onpressed();
+                  onPressed: () {if(formKey.currentState!.validate()&&widget.controller.text.trim().isNotEmpty){
+                       widget.task.taskName = controller.text;
+                   widget.onpressed();
+                  }
+                 
                   },
-                  child: const Text("edit Words")),
-            )
+                  child: CustomText(text: 'Edit Words', color: DarkPurple, fontSize: 15)),
+            ),
+              _micPressed
+                  ? SizedBox(
+                      height: 50,
+                      child: Lottie.asset(
+                        'lib/animated_assets/Animation - 1715665057745.json',
+                      ),
+                    )
+                  : Container(),
           ],
         ),
       ),

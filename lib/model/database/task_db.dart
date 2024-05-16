@@ -7,7 +7,7 @@ ValueNotifier<List<TaskModel>> taskNotifierList = ValueNotifier([]);
 class TaskDbFunctions extends ChangeNotifier {
   //adding task
   Future addTask(TaskModel task) async {
-    print(task.spokenWords);
+
     final Box<TaskModel> box = await Hive.openBox('TaskBox');
     await box.add(task);
     await getTask();
@@ -19,7 +19,7 @@ class TaskDbFunctions extends ChangeNotifier {
     final Box<TaskModel> box = await Hive.openBox('TaskBox');
     taskNotifierList.value.clear();
     taskNotifierList.value.addAll(box.values);
-    print(taskNotifierList.value.length);
+
     taskNotifierList.notifyListeners();
     await box.close();
   }
