@@ -149,7 +149,8 @@ class _HabbitTileState extends State<HabbitTile> {
                       color: DarkPurple, //color
                       borderRadius: BorderRadius.circular(5)),
                   height: 36,
-                  width: MediaQuery.of(context).size.width * 0.379,
+                        width: MediaQuery.of(context).size.width * 0.101,
+                  // width: MediaQuery.of(context).size.width * 0.379,
                   child: SizedBox(
                     width: 100,
                     child: Padding(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
+
 import 'package:tickyfy/Views/auth_pages/about.dart';
 import 'package:tickyfy/Views/task_screens/localnotifi.dart';
 import 'package:tickyfy/Views/task_screens/task_home.dart';

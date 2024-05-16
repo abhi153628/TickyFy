@@ -4,11 +4,14 @@ import 'package:intro_screen_onboarding_flutter/introduction.dart';
 import 'package:intro_screen_onboarding_flutter/introscreenonboarding.dart';
 import 'package:tickyfy/Views/auth_pages/welcome_page.dart';
 
+
+
 class OnBoardingPage extends StatelessWidget {
   final List<Introduction> list = [
     Introduction(
       imageUrl: 'lib/assets/images/pixeltrue-meditation-1.png',
-      imageHeight: 410,
+      imageHeight: 310,
+      // imageHeight: 410,
       title: "Stay Motivated",
       titleTextStyle: GoogleFonts.nunito(
           fontSize: 20,
